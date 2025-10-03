@@ -51,7 +51,7 @@ const [state, formAction] = useActionState<UploadFormState>(
             </label>
             <input type="text" id="name" name="name" />
             {state?.errors?.name && (
-              <span id="name-error" className="text-red-600 text-sm">
+              <span id="text" className="text-red-600 text-sm">
                 {state.errors.name.join(',')}
               </span>
             )}
@@ -63,7 +63,7 @@ const [state, formAction] = useActionState<UploadFormState>(
             </label>
             <input type="number" id="price" name="price" />
             {state?.errors?.price && (
-              <span id="name-error" className="text-red-600 text-sm">
+              <span id="number" className="text-red-600 text-sm">
                 {state.errors.price.join(',')}
               </span>
             )}
@@ -75,7 +75,7 @@ const [state, formAction] = useActionState<UploadFormState>(
             </label>
             <textarea id="description" name="description"></textarea>
             {state?.errors?.description && (
-              <span id="name-error" className="text-red-600 text-sm">
+              <span id="description" className="text-red-600 text-sm">
                 {state.errors.description.join(',')}
               </span>
             )}
@@ -87,7 +87,7 @@ const [state, formAction] = useActionState<UploadFormState>(
             </label>
             <input type="file" accept="image/*" id="imageUrl" name="imageUrl" />
             {state?.errors?.imageUrl && (
-              <span id="name-error" className="text-red-600 text-sm">
+              <span id="file" className="text-red-600 text-sm">
                 {state.errors.imageUrl.join(',')}
               </span>
             )}
@@ -97,9 +97,9 @@ const [state, formAction] = useActionState<UploadFormState>(
             <label htmlFor="description" className="block mb-2">
               Contact Email
             </label>
-            <textarea id="contactEmail" name="contactEmail"></textarea>
+            <input id="contactEmail" name="contactEmail"></input>
             {state?.errors?.contactEmail && (
-              <span id="name-error" className="text-red-600 text-sm">
+              <span id="contactEmail" className="text-red-600 text-sm">
                 {state.errors.contactEmail.join(',')}
               </span>
             )}
