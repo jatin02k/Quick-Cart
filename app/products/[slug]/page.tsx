@@ -1,26 +1,18 @@
-import Image from "next/image";
+// app/products/[slug]/page.tsx
 import { createClient } from "@/supabase/client";
-import { getCanonicalUrl, getImageUrl } from "@/utils";
-import { Metadata } from "next";
+import { getImageUrl, getCanonicalUrl } from "@/utils";
+import Image from "next/image";
 
 export const revalidate = 0;
 
-type Product = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  contactEmail: string;
-  boost?: boolean;
-};
+export async function generateStaticParams() {
+  const supabase = createClient();
+  const { data: products } = await supabase.from("products").select("*");
+  if (!products) return [];
+  return products.map((p: any) => ({ slug: p.id }));
+}
 
-type PageProps = {
-  params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { slug: string } }) {
   const supabase = createClient();
   const { data: post } = await supabase
     .from("products")
@@ -38,14 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export async function generateStaticParams() {
-  const supabase = createClient();
-  const { data: products } = await supabase.from("products").select("*");
-  if (!products) return [];
-  return products.map((p: Product) => ({ slug: p.id }));
-}
-
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
   const supabase = createClient();
@@ -63,6 +48,7 @@ export default async function Page({ params }: PageProps) {
       <Image src={getImageUrl(data.imageUrl)} alt={data.name} width={600} height={600} />
       <p>{data.description}</p>
       <p>${data.price}</p>
+      <a href={`mailto:${data.contactEmail}`}>Contact Seller</a>
     </div>
   );
 }
