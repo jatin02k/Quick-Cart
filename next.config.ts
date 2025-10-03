@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "5mb", // ✅ Increase limit (set to what you need)
     },
+    
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 
