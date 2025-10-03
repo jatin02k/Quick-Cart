@@ -5,12 +5,20 @@ import Image from "next/image";
 
 export const revalidate = 0;
 
-type Props = {
+// 1. Define Props for the Page Component
+interface PageComponentProps {
   params: { slug: string };
-};
+}
+
+// 2. Define Props for the Metadata function
+// This helps Next.js satisfy the 'PageProps' constraint internally during the build
+interface MetadataProps {
+  params: { slug: string };
+}
+
 
 export async function generateMetadata(
-  { params }: Props,
+  { params }: MetadataProps, // Use the dedicated MetadataProps type here
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const slug = params.slug;
@@ -51,23 +59,20 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function Page({ params }: Props) {
-  // FIX: Removed 'await params'. The 'params' object is passed synchronously 
-  // to a Server Component, it is not a Promise.
+export default async function Page({ params }: PageComponentProps) {
+  // Access slug directly – still correct from previous fix
   const slug = params.slug;
-  
+
   const supabase = createClient();
 
   const { data } = await supabase
     .from("products")
     .select("*")
-    // Used the correct slug property
-    .match({ id: slug }) 
+    .match({ id: slug })
     .single();
 
   if (!data) {
-    // Handle case where product data might be null (e.g., if a product was deleted)
-    // You might want a more elaborate 404 page here.
+    // Basic null check added
     return <div>Product not found.</div>;
   }
 
