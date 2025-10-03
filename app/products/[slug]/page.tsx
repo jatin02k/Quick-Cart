@@ -7,6 +7,7 @@ export const revalidate = 0;
 
 type Props = {
   params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata(
@@ -53,7 +54,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: Props) {
-   const resolvedParams = await params;
+   const resolvedParams = params;
   const supabase = createClient();
 
   const { data } = await supabase
