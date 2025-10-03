@@ -5,16 +5,28 @@ import SubmitButton from '@/components/submit-button';
 import { useActionState } from 'react';
 
 
-const initialState = {
+type UploadFormState = {
+  type?: string;
+  message: string;
+  errors: {
+    name?: string[];
+    price?: string[];
+    description?: string[];
+    imageUrl?: string[];
+    contactEmail?: string[];
+  } | null;
+};
+const initialState: UploadFormState = {
+  type: undefined,
   message: '',
   errors: null,
 };
 
 const UploadFormPage: React.FC = () => {
-  const [state, formAction] = useActionState<any>(
-    sellYourItemAction as any,
-    initialState
-  );
+const [state, formAction] = useActionState<UploadFormState>(
+  sellYourItemAction as unknown as (data: UploadFormState) => Promise<UploadFormState>,
+  initialState
+);
 
   return (
     <div className="px-12 pt-24 pb-12 min-h-screen max-w-[100rem] mx-auto flex gap-56">
